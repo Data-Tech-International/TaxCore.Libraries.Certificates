@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 
-namespace Datati.Libraries.Certificates.Extensions
+namespace TaxCore.Libraries.Certificates.Extensions
 {
     public static class ObjectExtensions
     {

@@ -1,4 +1,4 @@
-﻿using Datati.Libraries.Certificates.Extensions;
+﻿using TaxCore.Libraries.Certificates.Extensions;
 using System.Runtime.Serialization;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
