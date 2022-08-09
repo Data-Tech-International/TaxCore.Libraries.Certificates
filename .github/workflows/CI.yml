@@ -13,7 +13,7 @@ jobs:
     runs-on: windows-latest
 
     env:
-      Solution_Name: Dti.Libraries.sln
+      Solution_Name: TaxCore-Libraries.sln
       Test_Project_Path: test\Certificates\Certificates.Test.csproj
    
     steps:
