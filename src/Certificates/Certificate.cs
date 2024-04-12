@@ -25,9 +25,8 @@ namespace TaxCore.Libraries.Certificates
         }
 
         public Certificate(X509Certificate2 certificate) :
-            this(certificate.RawData)
+            base(certificate)
         {
-            this.PrivateKey = certificate.PrivateKey;
         }
 
         public Certificate(byte[] pfx, string password) :
