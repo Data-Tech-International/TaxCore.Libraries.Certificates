@@ -3,6 +3,8 @@ using System.Runtime.Serialization;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using Org.BouncyCastle.Asn1;
+using Org.BouncyCastle.Asn1.X509;
 
 namespace TaxCore.Libraries.Certificates
 {
@@ -227,7 +229,7 @@ namespace TaxCore.Libraries.Certificates
 
         public string ExtractTIN()
         {
-            foreach (X509Extension ext in Extensions)
+            foreach (System.Security.Cryptography.X509Certificates.X509Extension ext in Extensions)
             {
                 if (ext.Oid.Value.StartsWith("1.3.6.1.4.1.49952.") && ext.Oid.Value.Split('.')[9] == "6")
                 {
@@ -239,7 +241,7 @@ namespace TaxCore.Libraries.Certificates
 
         public string ExtractTaxCoreApiUrl()
         {
-            foreach (X509Extension ext in Extensions)
+            foreach (System.Security.Cryptography.X509Certificates.X509Extension ext in Extensions)
             {
                 if (ext.Oid.Value.StartsWith("1.3.6.1.4.1.49952.") && ext.Oid.Value.Split('.')[9] == "5")
                 {
@@ -281,7 +283,7 @@ namespace TaxCore.Libraries.Certificates
 
             try
             {
-                foreach (X509Extension ext in Extensions)
+                foreach (System.Security.Cryptography.X509Certificates.X509Extension ext in Extensions)
                 {
                     if (IsEnhancedKeyUsage(ext))
                     {
@@ -304,7 +306,7 @@ namespace TaxCore.Libraries.Certificates
             return CertificateTypes.Unknown;
         }
 
-        private bool IsEnhancedKeyUsage(X509Extension ext)
+        private bool IsEnhancedKeyUsage(System.Security.Cryptography.X509Certificates.X509Extension ext)
         {
             return (ext.Oid.FriendlyName == "Enhanced Key Usage");
         }
@@ -321,72 +323,75 @@ namespace TaxCore.Libraries.Certificates
             if (Handle == IntPtr.Zero)
                 return null;
 
-            var commonName = string.Empty;
-            var organizationUnit = string.Empty;
-            var organization = string.Empty;
-            var locality = string.Empty;
-            var state = string.Empty;
-            var country = string.Empty;
-            var serialnumber = string.Empty;
-            var domainComponent = string.Empty;
-            var email = string.Empty;
-            var givenName = string.Empty;
-            var streetAddress = string.Empty;
-            var surName = string.Empty;
+            var data = new CertRequestData();
+            byte[] rawData = base.SubjectName.RawData;
+            Asn1Object asn1Object = Asn1Object.FromByteArray(rawData);
 
-            foreach (string item in Subject.Split(','))
+            if (asn1Object is Asn1Sequence sequence)
             {
-                if (item.Trim().Split('=')[0] == "CN")
-                    commonName = item.Split('=')[1];
-
-                if (item.Trim().Split('=')[0] == "OU")
-                    organizationUnit = item.Split('=')[1];
-
-                if (item.Trim().Split('=')[0] == "O")
-                    organization = item.Split('=')[1];
-
-                if (item.Trim().Split('=')[0] == "L")
-                    locality = item.Split('=')[1];
-
-                if (item.Trim().Split('=')[0] == "S")
-                    state = item.Split('=')[1];
-
-                if (item.Trim().Split('=')[0] == "C")
-                    country = item.Split('=')[1];
-
-                if (item.Trim().Split('=')[0] == "SERIALNUMBER")
-                    serialnumber = item.Split('=')[1];
-
-                if (item.Trim().Split('=')[0] == "DC")
-                    domainComponent = item.Split('=')[1];
-
-                if (item.Trim().Split('=')[0] == "E")
-                    email = item.Split('=')[1];
-
-                if (item.Trim().Split('=')[0] == "G")
-                    givenName = item.Split('=')[1];
-
-                if (item.Trim().Split('=')[0] == "STREET")
-                    streetAddress = item.Split('=')[1];
-
-                if (item.Trim().Split('=')[0] == "SN")
-                    surName = item.Split('=')[1];
+                foreach (Asn1Encodable encodable in sequence)
+                {
+                    if (encodable is Asn1Set set && set.Count > 0)
+                    {
+                        if (set[0] is Asn1Sequence keyValueSequence && keyValueSequence.Count > 1)
+                        {
+                            if (keyValueSequence[0] is DerObjectIdentifier oid)
+                            {
+                                if (oid.Id == X509Name.CN.Id)
+                                {
+                                    data.CommonName = keyValueSequence[1].ToString();
+                                }
+                                if (oid.Id == X509Name.OU.Id)
+                                {
+                                    data.OrganizationUnit = keyValueSequence[1].ToString();
+                                }
+                                if (oid.Id == X509Name.O.Id)
+                                {
+                                    data.Organization = keyValueSequence[1].ToString();
+                                }
+                                if (oid.Id == X509Name.L.Id)
+                                {
+                                    data.Locality = keyValueSequence[1].ToString();
+                                }
+                                if (oid.Id == X509Name.ST.Id)
+                                {
+                                    data.State = keyValueSequence[1].ToString();
+                                }
+                                if (oid.Id == X509Name.C.Id)
+                                {
+                                    data.Country = keyValueSequence[1].ToString();
+                                }
+                                if (oid.Id == X509Name.SerialNumber.Id)
+                                {
+                                    data.DeviceSerialNumber = keyValueSequence[1].ToString();
+                                }
+                                if (oid.Id == X509Name.DC.Id)
+                                {
+                                    data.DomainComponent = keyValueSequence[1].ToString();
+                                }
+                                if (oid.Id == X509Name.EmailAddress.Id)
+                                {
+                                    data.Email = keyValueSequence[1].ToString();
+                                }
+                                if (oid.Id == X509Name.GivenName.Id)
+                                {
+                                    data.GivenName = keyValueSequence[1].ToString();
+                                }
+                                if (oid.Id == X509Name.Street.Id)
+                                {
+                                    data.StreetAddress = keyValueSequence[1].ToString();
+                                }
+                                if (oid.Id == X509Name.Surname.Id)
+                                {
+                                    data.SurName = keyValueSequence[1].ToString();
+                                }
+                            }
+                        }
+                    }
+                }
             }
-            return new CertRequestData
-            {
-                CommonName = commonName,
-                OrganizationUnit = organizationUnit,
-                Organization = organization,
-                Locality = locality,
-                State = state,
-                Country = country,
-                DeviceSerialNumber = serialnumber,
-                DomainComponent = domainComponent,
-                Email = email,
-                GivenName = givenName,
-                StreetAddress = streetAddress,
-                SurName = surName
-            };
+
+            return data;
         }
 
         #endregion Private methods
