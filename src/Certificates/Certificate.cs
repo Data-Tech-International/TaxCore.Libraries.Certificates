@@ -17,6 +17,7 @@ namespace TaxCore.Libraries.Certificates
 
         #region Constructors
 
+
         public Certificate() : base()
         {
         }
