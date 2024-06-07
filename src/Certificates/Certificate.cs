@@ -340,51 +340,51 @@ namespace TaxCore.Libraries.Certificates
                             {
                                 if (oid.Id == X509Name.CN.Id)
                                 {
-                                    data.CommonName = keyValueSequence[1].ToString();
+                                    data.CommonName += keyValueSequence[1].ToString();
                                 }
                                 if (oid.Id == X509Name.OU.Id)
                                 {
-                                    data.OrganizationUnit = keyValueSequence[1].ToString();
+                                    data.OrganizationUnit += keyValueSequence[1].ToString();
                                 }
                                 if (oid.Id == X509Name.O.Id)
                                 {
-                                    data.Organization = keyValueSequence[1].ToString();
+                                    data.Organization += keyValueSequence[1].ToString();
                                 }
                                 if (oid.Id == X509Name.L.Id)
                                 {
-                                    data.Locality = keyValueSequence[1].ToString();
+                                    data.Locality += keyValueSequence[1].ToString();
                                 }
                                 if (oid.Id == X509Name.ST.Id)
                                 {
-                                    data.State = keyValueSequence[1].ToString();
+                                    data.State += keyValueSequence[1].ToString();
                                 }
                                 if (oid.Id == X509Name.C.Id)
                                 {
-                                    data.Country = keyValueSequence[1].ToString();
+                                    data.Country += keyValueSequence[1].ToString();
                                 }
                                 if (oid.Id == X509Name.SerialNumber.Id)
                                 {
-                                    data.DeviceSerialNumber = keyValueSequence[1].ToString();
+                                    data.DeviceSerialNumber += keyValueSequence[1].ToString();
                                 }
                                 if (oid.Id == X509Name.DC.Id)
                                 {
-                                    data.DomainComponent = keyValueSequence[1].ToString();
+                                    data.DomainComponent += keyValueSequence[1].ToString();
                                 }
                                 if (oid.Id == X509Name.EmailAddress.Id)
                                 {
-                                    data.Email = keyValueSequence[1].ToString();
+                                    data.Email += keyValueSequence[1].ToString();
                                 }
                                 if (oid.Id == X509Name.GivenName.Id)
                                 {
-                                    data.GivenName = keyValueSequence[1].ToString();
+                                    data.GivenName += keyValueSequence[1].ToString();
                                 }
                                 if (oid.Id == X509Name.Street.Id)
                                 {
-                                    data.StreetAddress = keyValueSequence[1].ToString();
+                                    data.StreetAddress += keyValueSequence[1].ToString();
                                 }
                                 if (oid.Id == X509Name.Surname.Id)
                                 {
-                                    data.SurName = keyValueSequence[1].ToString();
+                                    data.SurName += keyValueSequence[1].ToString();
                                 }
                             }
                         }
