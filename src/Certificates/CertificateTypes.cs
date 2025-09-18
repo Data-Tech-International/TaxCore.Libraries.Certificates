@@ -47,7 +47,12 @@ namespace TaxCore.Libraries.Certificates
         /// <summary>
         /// Sign data certificate class 2 used for signing data on virtual Developer Secure Element
         /// </summary>
-        CertificateClassV38 = 38
+        CertificateClassV38 = 38,
+
+        /// <summary>
+        /// Test certificate class for ECC key
+        /// </summary>
+        CertificateClassV39 = 39
     }
 
     public class CertificateClassification : Dictionary<CertificateTypes, CertificateTemplate>
