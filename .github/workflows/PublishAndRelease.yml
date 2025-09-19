@@ -3,6 +3,7 @@ name: "Deploy to Nuget"
 on:
   push:
     branches: [ "add-cert-type-39" ]
+    
 
 env:
   PROJECT_PATH: src/Certificates/Certificates.csproj
