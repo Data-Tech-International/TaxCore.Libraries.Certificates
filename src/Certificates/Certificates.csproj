@@ -13,8 +13,8 @@
     <PackageLicenseUrl>https://github.com/Data-Tech-International/TaxCore-Libraries/blob/main/LICENSE</PackageLicenseUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <Description>Libraries for work with certificates created by the TaxCore solution</Description>
+  	<Version>1.0.43-alpha-add-cert-type-39</Version>
 	</PropertyGroup>
-  <Version>1.0.43-alpha-add-cert-type-39</Version>
   <ItemGroup>
     <None Remove="Icon\taxcore.png" />
   </ItemGroup>
