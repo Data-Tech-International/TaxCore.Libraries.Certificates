@@ -14,7 +14,7 @@
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <Description>Libraries for work with certificates created by the TaxCore solution</Description>
 	</PropertyGroup>
-
+  <Version>1.0.43-alpha-add-cert-type-39</Version>
   <ItemGroup>
     <None Remove="Icon\taxcore.png" />
   </ItemGroup>
