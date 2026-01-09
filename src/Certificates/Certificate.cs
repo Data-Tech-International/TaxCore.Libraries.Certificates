@@ -309,7 +309,7 @@ namespace TaxCore.Libraries.Certificates
 
         private bool IsEnhancedKeyUsage(System.Security.Cryptography.X509Certificates.X509Extension ext)
         {
-            return (ext.Oid.FriendlyName == "Enhanced Key Usage");
+            return (ext.Oid.Value == OIDs.ExtendedKeyUsage);
         }
 
         private CertRequestData GetCertRequestData()
