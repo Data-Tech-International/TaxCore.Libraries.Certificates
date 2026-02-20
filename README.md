@@ -30,4 +30,3 @@ This package can be used to export the following certificates data:
   - GivenName - Not currently in use,
   - StreetAddress - Physical street address,
   - SurName - Authorized Person first name
-  
