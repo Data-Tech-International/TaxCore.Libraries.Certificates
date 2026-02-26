@@ -31,5 +31,7 @@ namespace TaxCore.Libraries.Certificates
         public string Password { get; set; } = string.Empty;
 
         public string TIN { get; set; } = string.Empty;
+
+        public int? ValidityPeriodDays { get; set; }
     }
 }
