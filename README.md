@@ -10,7 +10,7 @@ This package can be used to export the following certificates data:
 - TaxCoreApiUrl - URL of TaxCore API
 - UniqueIdentifier (UID) - Unique identifier of the certificate in the system
 - ExpiryDate - Date of certificate expiration
-- CertificateType - Type of certificate in the system
+- CertificateType - Type of certificates in the system
   - IsEncryption - Type V36 - used for data encryption
   - IsSigning - Type V33, V35 and V38 - used for applying digital signature
   - IsAuthentication - Type V32, V34 and V37 - used for authentication to web services
