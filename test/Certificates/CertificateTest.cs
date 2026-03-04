@@ -6,6 +6,7 @@ namespace TaxCore.Libraries.Certificates.Test
         [TestMethod]
         public void TestMethod1()
         {
+            
         }
     }
 }
