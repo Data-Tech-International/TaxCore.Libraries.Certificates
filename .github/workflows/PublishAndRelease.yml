@@ -2,8 +2,7 @@ name: "Deploy to Nuget"
 
 on:
   push:
-    branches: [ "add-cert-validity-period" ]
-    
+    branches: [ "main" ]
 
 env:
   PROJECT_PATH: src/Certificates/Certificates.csproj
@@ -39,15 +38,16 @@ jobs:
         
       - name: 'Build project'
         run: dotnet build ${{ env.PROJECT_PATH }} --no-restore --configuration Release
-                
+        
+        
       - name: 'Pack project'
         run: dotnet pack ${{ env.PROJECT_PATH }} --no-restore --no-build --configuration Release -p:PackageVersion=${{ steps.gitversion.outputs.semVer }} --output ${{ env.PACKAGE_OUTPUT_DIRECTORY }}
-      
+
       - name: 'Push package'
-        run: dotnet nuget push "${{ env.PACKAGE_OUTPUT_DIRECTORY }}\*.nupkg" -k "${{ secrets.NUGET_AUTH_TOKEN }}" -s "${{ env.NUGET_SOURCE_URL }}"
+        run: dotnet nuget push ${{ env.PACKAGE_OUTPUT_DIRECTORY }}\*.nupkg -k ${{ secrets.NUGET_AUTH_TOKEN }} -s ${{ env.NUGET_SOURCE_URL }}
         
       - name: Publish project 
-        run: dotnet publish ${{ env.PROJECT_PATH }} -c Release -r win-x64 -p:PublishSingleFile=false -p:AssemblyVersion=${{ steps.gitversion.outputs.assemblySemVer }} -p:FileVersion=${{ steps.gitversion.outputs.assemblySemFileVer }} -p:InformationalVersion=${{ steps.gitversion.outputs.informationalVersion }} -f net6.0
+        run: dotnet publish ${{ env.PROJECT_PATH }} -c Release -r win-x64 -p:PublishSingleFile=false -p:AssemblyVersion=${{ steps.gitversion.outputs.semVer }} -f net6.0
 
       - name: Zip Files
         uses: vimtor/action-zip@v1
