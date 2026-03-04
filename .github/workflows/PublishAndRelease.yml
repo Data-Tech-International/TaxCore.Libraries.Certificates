@@ -2,13 +2,13 @@ name: "Deploy to Nuget"
 
 on:
   push:
-    branches: [ "add-cert-validity-period" ]
+    branches: [ "main" ]
     
 
 env:
   PROJECT_PATH: src/Certificates/Certificates.csproj
   PACKAGE_OUTPUT_DIRECTORY: ${{ github.workspace }}\output
-  NUGET_SOURCE_URL: 'https://pkgs.dev.azure.com/datati/_packaging/TaxCore/nuget/v3/index.json'
+  NUGET_SOURCE_URL: 'https://api.nuget.org/v3/index.json'
   
 jobs:
   deploy:
@@ -32,7 +32,7 @@ jobs:
         uses: gittools/actions/gitversion/execute@v0.9.13
         with:
           useConfigFile: true
-          configFilePath: GitVersion.yml
+          configFilePath: .github/workflows/GitVersion.yml
           
       - name: 'Restore packages'
         run: dotnet restore ${{ env.PROJECT_PATH }}
@@ -44,10 +44,10 @@ jobs:
         run: dotnet pack ${{ env.PROJECT_PATH }} --no-restore --no-build --configuration Release -p:PackageVersion=${{ steps.gitversion.outputs.semVer }} --output ${{ env.PACKAGE_OUTPUT_DIRECTORY }}
       
       - name: 'Push package'
-        run: dotnet nuget push "${{ env.PACKAGE_OUTPUT_DIRECTORY }}\*.nupkg" -k "${{ secrets.AZURE_DEVOPS_PAT }}" -s "${{ env.NUGET_SOURCE_URL }}"
+        run: run: dotnet nuget push ${{ env.PACKAGE_OUTPUT_DIRECTORY }}\*.nupkg -k ${{ secrets.NUGET_AUTH_TOKEN }} -s ${{ env.NUGET_SOURCE_URL }}
         
       - name: Publish project 
-        run: dotnet publish ${{ env.PROJECT_PATH }} -c Release -r win-x64 -p:PublishSingleFile=false -p:AssemblyVersion=${{ steps.gitversion.outputs.assemblySemVer }} -p:FileVersion=${{ steps.gitversion.outputs.assemblySemFileVer }} -p:InformationalVersion=${{ steps.gitversion.outputs.informationalVersion }} -f net6.0
+        run: run: dotnet publish ${{ env.PROJECT_PATH }} -c Release -r win-x64 -p:PublishSingleFile=false -p:AssemblyVersion=${{ steps.gitversion.outputs.semVer }} -f net6.0
 
       - name: Zip Files
         uses: vimtor/action-zip@v1
