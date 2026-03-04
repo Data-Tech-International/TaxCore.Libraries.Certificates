@@ -3,7 +3,6 @@ name: "Deploy to Nuget"
 on:
   push:
     branches: [ "main" ]
-    
 
 env:
   PROJECT_PATH: src/Certificates/Certificates.csproj
@@ -39,10 +38,11 @@ jobs:
         
       - name: 'Build project'
         run: dotnet build ${{ env.PROJECT_PATH }} --no-restore --configuration Release
-                
+        
+        
       - name: 'Pack project'
         run: dotnet pack ${{ env.PROJECT_PATH }} --no-restore --no-build --configuration Release -p:PackageVersion=${{ steps.gitversion.outputs.semVer }} --output ${{ env.PACKAGE_OUTPUT_DIRECTORY }}
-      
+
       - name: 'Push package'
         run: dotnet nuget push ${{ env.PACKAGE_OUTPUT_DIRECTORY }}\*.nupkg -k ${{ secrets.NUGET_AUTH_TOKEN }} -s ${{ env.NUGET_SOURCE_URL }}
         
